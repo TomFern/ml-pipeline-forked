@@ -1,5 +1,5 @@
 version: v1.0
-name: CI for ML
+name: CD for ML
 agent:
   machine:
     type: e1-standard-2
@@ -15,23 +15,10 @@ global_job_config:
       - cache store
       - 'cache store venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
 blocks:
-  - name: Train model
+  - name: Package
     task:
       jobs:
-        - name: Install and train
-          commands:
-            - python ./ml/1_build.py
-            - python ./ml/2_train.py
-            - (cd ml; artifact push workflow --force training_data)
-  - name: Test model
-    task:
-      jobs:
-        - name: Test
+        - name: Package
           commands:
             - (cd ml; artifact pull workflow --force training_data)
-            - python ./ml/3_test.py
-promotions:
-  - name: Deploy
-    pipeline_file: pipeline_2.yml
-    auto_promote:
-      when: result = 'passed'
+            - python ./ml/4_package.py
