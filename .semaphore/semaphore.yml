@@ -8,8 +8,6 @@ global_job_config:
   prologue:
     commands:
       - sem-version python 3.11
-      - mkdir -p ~/.pip
-      - 'printf ''[global]\ndownload_cache = ~/ml-pipeline-forked/pip_cache\n'' >> ~/.pip/pip.conf'
       - checkout
 blocks:
   - name: Build
