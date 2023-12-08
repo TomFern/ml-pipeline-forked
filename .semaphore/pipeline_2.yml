@@ -1,0 +1,23 @@
+version: v1.0
+name: CD for ML
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+global_job_config:
+  prologue:
+    commands:
+      - sem-version python 3.11
+      - checkout
+      - 'cache restore venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv'
+      - cache restore
+      - source ./tools/install.sh
+      - cache store
+      - 'cache store venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
+blocks:
+  - name: Package
+    task:
+      jobs:
+        - name: Package
+          commands:
+            - python ./ml/4_package.py
