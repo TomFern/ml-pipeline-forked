@@ -1,13 +1,20 @@
 version: v1.0
-name: Initial Pipeline
+name: CI for ML
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+global_job_config:
+  prologue:
+    commands:
+      - sem-version python 3.11.4
+      - checkout
 blocks:
-  - name: 'Block #1'
+  - name: Build
     task:
       jobs:
-        - name: 'Job #1'
+        - name: Install and build
           commands:
-            - checkout
+            - cache restore
+            - source ./tools/install.sh
+            - cache store
