@@ -70,7 +70,7 @@ def upload_to_server():
 
 def save_to_dist():
     os.system("mkdir -p dist")
-    os.system("cp -rf " + temp_dir.name + "./dist")
+    os.system("cp -rf " + temp_dir.name + "/* ./dist")
 
 # upload_to_server()
 save_to_dist()
