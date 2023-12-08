@@ -49,22 +49,31 @@ tf.keras.models.save_model(
 # Note that we're using a password and skipping host key checking below. You should NOT do this in production!
 # You should also make sure the use your are using to run your CI/CD pipelines only has access to the remote resources required
 
-# Save the packaged model to the remote server
-# In this example, the staging location is on the same server as TensorFlow Serving deployment to keep things simple
-cnopts = pysftp.CnOpts()
-cnopts.hostkeys = None  # Disable host keys checking - not for production
-remote_staging_path = os.getenv('DEPLOY_SERVER_PATH') + '/staging/' + version
+def upload_to_server():
+    # Save the packaged model to the remote server
+    # In this example, the staging location is on the same server as TensorFlow Serving deployment to keep things simple
+    cnopts = pysftp.CnOpts()
+    cnopts.hostkeys = None  # Disable host keys checking - not for production
+    remote_staging_path = os.getenv('DEPLOY_SERVER_PATH') + '/staging/' + version
 
-# Again, it pays to be verbose - any output will appear in the CircleCI web console for later inspection
-print('Uploading model to: ' + remote_staging_path)
+    # Again, it pays to be verbose - any output will appear in the CircleCI web console for later inspection
+    print('Uploading model to: ' + remote_staging_path)
 
-with pysftp.Connection(os.getenv('DEPLOY_SERVER_HOSTNAME'), username=os.getenv('DEPLOY_SERVER_USERNAME'), password=os.getenv('DEPLOY_SERVER_PASSWORD'), cnopts=cnopts) as sftp:
-    # Make all non-existing directories
-    sftp.makedirs(remote_staging_path)
-    # The packaged model is a directory, so must use the put_r function to recursively upload it
-    sftp.put_r(temp_export_path, remote_staging_path)
+    with pysftp.Connection(os.getenv('DEPLOY_SERVER_HOSTNAME'), username=os.getenv('DEPLOY_SERVER_USERNAME'), password=os.getenv('DEPLOY_SERVER_PASSWORD'), cnopts=cnopts) as sftp:
+        # Make all non-existing directories
+        sftp.makedirs(remote_staging_path)
+        # The packaged model is a directory, so must use the put_r function to recursively upload it
+        sftp.put_r(temp_export_path, remote_staging_path)
 
-print('\nSaved model version:' + version)
+    print('\nSaved model version:' + version)
+
+
+def save_to_dist():
+    os.system("mkdir -p dist")
+    os.system("cp -rf " + temp_dir.name + "./dist")
+
+# upload_to_server()
+save_to_dist()
 
 # Clean up the temporary directory
 temp_dir.cleanup()
