@@ -9,6 +9,7 @@ global_job_config:
     commands:
       - sem-version python 3.11
       - checkout
+      - 'printf ''[global]\ndownload_cache = ~/ml-pipeline-forked/pip_cache\n'' >> ~/.pip/pip.conf'
 blocks:
   - name: Build
     task:
