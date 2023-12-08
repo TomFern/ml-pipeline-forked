@@ -9,15 +9,17 @@ global_job_config:
     commands:
       - sem-version python 3.11
       - checkout
+      - cache restore
+      - 'cache restore venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv'
+      - source ./tools/install.sh
+      - cache store
+      - 'cache strore venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
 blocks:
   - name: Train
     task:
       jobs:
         - name: Install and train
           commands:
-            - cache restore
-            - source ./tools/install.sh
-            - cache store
             - python ./ml/1_build.py
             - python ./ml/2_train.py
-            - sem artifact push workflow ml/training_data
+            - sem artifact push workflow --force ml/training_data
