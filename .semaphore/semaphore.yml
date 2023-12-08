@@ -20,3 +20,4 @@ blocks:
             - cache store
             - python ./ml/1_build.py
             - python ./ml/2_train.py
+            - sem artifact push workflow ml/training_data
