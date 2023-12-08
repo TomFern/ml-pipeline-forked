@@ -9,8 +9,8 @@ global_job_config:
     commands:
       - sem-version python 3.11
       - checkout
-      - cache restore
       - 'cache restore venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv'
+      - cache restore
       - source ./tools/install.sh
       - cache store
       - 'cache strore venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
