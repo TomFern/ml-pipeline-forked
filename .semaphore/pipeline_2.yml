@@ -22,3 +22,4 @@ blocks:
           commands:
             - (cd ml; artifact pull workflow --force training_data)
             - python ./ml/4_package.py
+            - artifact push workflow --force dist
