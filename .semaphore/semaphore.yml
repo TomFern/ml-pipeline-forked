@@ -13,7 +13,7 @@ global_job_config:
       - cache restore
       - source ./tools/install.sh
       - cache store
-      - 'cache strore venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
+      - 'cache store venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
 blocks:
   - name: Train
     task:
