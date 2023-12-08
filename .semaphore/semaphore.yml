@@ -30,10 +30,3 @@ blocks:
           commands:
             - (cd ml; artifact pull workflow --force training_data)
             - python ./ml/3_test.py
-  - name: Retrain model
-    task:
-      jobs:
-        - name: Retrain
-          commands:
-            - (cd ml; artifact pull workflow --force training_data)
-            - python ./ml/6_retrain.py
