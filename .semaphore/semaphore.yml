@@ -18,3 +18,4 @@ blocks:
             - cache restore
             - source ./tools/install.sh
             - cache store
+            - python ./ml/1_build.py
