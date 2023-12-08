@@ -15,7 +15,7 @@ global_job_config:
       - cache store
       - 'cache store venv-$SEMAPHORE_GIT_BRANCH,venv-main,venv venv'
 blocks:
-  - name: Train
+  - name: Train model
     task:
       jobs:
         - name: Install and train
@@ -23,3 +23,15 @@ blocks:
             - python ./ml/1_build.py
             - python ./ml/2_train.py
             - sem artifact push workflow --force ml/training_data
+  - name: Test model
+    task:
+      jobs:
+        - name: Test
+          commands:
+            - python ./ml/3_test.py
+  - name: Retrain model
+    task:
+      jobs:
+        - name: Retrain
+          commands:
+            - python ./ml/6_retrain.py
