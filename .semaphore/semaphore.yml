@@ -28,10 +28,12 @@ blocks:
       jobs:
         - name: Test
           commands:
+            - sem artifact restore workflow ml/training_data
             - python ./ml/3_test.py
   - name: Retrain model
     task:
       jobs:
         - name: Retrain
           commands:
+            - sem artifact restore workflow ml/training_data
             - python ./ml/6_retrain.py
