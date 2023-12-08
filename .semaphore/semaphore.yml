@@ -10,12 +10,13 @@ global_job_config:
       - sem-version python 3.11
       - checkout
 blocks:
-  - name: Build
+  - name: Train
     task:
       jobs:
-        - name: Install and build
+        - name: Install and train
           commands:
             - cache restore
             - source ./tools/install.sh
             - cache store
             - python ./ml/1_build.py
+            - python ./ml/2_train.py
