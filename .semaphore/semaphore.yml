@@ -22,18 +22,18 @@ blocks:
           commands:
             - python ./ml/1_build.py
             - python ./ml/2_train.py
-            - artifact push workflow --force ml/training_data
+            - (cd ml; artifact push workflow --force training_data)
   - name: Test model
     task:
       jobs:
         - name: Test
           commands:
-            - artifact pull workflow ml/training_data
+            - (cd ml; artifact pull workflow training_data)
             - python ./ml/3_test.py
   - name: Retrain model
     task:
       jobs:
         - name: Retrain
           commands:
-            - artifact pull workflow ml/training_data
+            - (cd ml; artifact pull workflow training_data)
             - python ./ml/6_retrain.py
